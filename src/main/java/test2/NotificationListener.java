@@ -26,15 +26,6 @@ public class NotificationListener extends JobExecutionListenerSupport{
         if(jobExecution.getStatus() == BatchStatus.COMPLETED) {
             LOGGER.info("JOB FINISHED!");
 
-/*            jdbcTemplate.query("SELECT MATCH_ID, MARKET_ID, OUTCOME_ID, SPECIFIERS, DATE_INSERT FROM match",
-                    (rs, row) -> new Match(
-                            rs.getString(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4),
-                            rs.getString(5)
-                            )
-            ).forEach(match -> LOGGER.info("Found <" + match + "> in the database."));*/
         }
     }
 }

@@ -5,17 +5,14 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.batch.item.ItemProcessor;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class MatchProcessor implements ItemProcessor<Match, Match> {
 
     private static final Log logger = LogFactory.getLog(MatchProcessor.class);
     @Override
     public Match process(final Match match) {
-/*        logger.info(":::processedMatch:::1 " + match.getMarketId());
-        logger.info(":::processedMatch:::2 " + match);*/
+/*        logger.info(":::processedMatch:::1 " + match.getMarketId()); */
 
         final String matchId = match.getMatchId();
         final String marketId  = match.getMarketId();
@@ -31,8 +28,6 @@ public class MatchProcessor implements ItemProcessor<Match, Match> {
         processedMatch.setOutcomeId(outcomeId);
         processedMatch.setSpecifiers(specifiers);
         processedMatch.setDateInsert(formatter.format(date));
-
-//        logger.info(":::processedMatch::: 3" + matchesToSort.size());
 
         return processedMatch;
     }
