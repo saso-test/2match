@@ -19,20 +19,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 @Configuration
 @EnableBatchProcessing
-//@EnableAsync
 public class BatchConfiguration {
 
     @Autowired
@@ -44,10 +43,24 @@ public class BatchConfiguration {
     private static final Log logger = LogFactory.getLog(BatchConfiguration.class);
 
     @Bean
-    public FlatFileItemReader<Match> reader() {
+    public FlatFileItemReader<Match> reader(){
+
+        Charset charset = Charset.forName("UTF-8");
+
+        List<String> lines = null;
+        try {
+            lines = Files.readAllLines(new ClassPathResource("fo_random.txt").getFile().toPath(), charset);
+            Collections.sort(lines);
+            lines.remove(lines.size()-1);
+            Files.write(new ClassPathResource("fo_random.txt").getFile().toPath(), lines, charset);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return new FlatFileItemReaderBuilder<Match>()
                 .name("matchItemReader")
-                .linesToSkip(1)
+//                .linesToSkip(1)
                 .resource(new ClassPathResource("fo_random.txt"))
                 .delimited()
                 .names(new String[]{"matchId", "marketId", "outcomeId", "specifiers", "dateInsert"})
